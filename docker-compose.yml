@@ -1,18 +1,62 @@
-version: '2'
+version: '3'
 
 volumes:
     logs:
         driver: local
 
+networks:
+  app-network:
+    driver: bridge
+
 services:
-    slim:
-        image: php:7-alpine
+    #PHP Service
+    php:
+        build:
+            context: .
+            dockerfile: ./etc/php/Dockerfile
+        image: slim
         working_dir: /var/www
-        command: php -S 0.0.0.0:8080 -t public
+        container_name: php
+        restart: unless-stopped
+        tty: true
         environment:
             docker: "true"
-        ports:
-            - 8080:8080
+        networks:
+            - app-network
         volumes:
             - .:/var/www
             - logs:/var/www/logs
+            - ./etc/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+
+    #Nginx Service
+    proxy:
+        image: nginx:alpine
+        container_name: proxy
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "80:80"
+            - "443:443"
+        networks:
+            - app-network
+        volumes:
+            - ./:/var/www
+            - ./etc/nginx/conf.d/:/etc/nginx/conf.d/
+
+    #MySQL Service
+    db:
+        image: mysql:8.0
+        container_name: db
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "3306:3306"
+        environment:
+        MYSQL_DATABASE: laser_profile
+        MYSQL_ROOT_PASSWORD: DB_PASSWORD
+        SERVICE_TAGS: dev
+        SERVICE_NAME: mysql
+        networks:
+            - app-network
+        volumes:
+            - ./etc/mysql/my.cnf:/etc/mysql/my.cnf
