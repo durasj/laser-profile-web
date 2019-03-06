@@ -3,6 +3,8 @@ version: '3'
 volumes:
     logs:
         driver: local
+    dbdata:
+        driver: local
 
 services:
     #PHP Service
@@ -33,7 +35,6 @@ services:
         ports:
             - "80:80"
             - "443:443"
-            - "9000:9000"
         networks:
             - app-network
         volumes:
@@ -55,3 +56,4 @@ services:
             SERVICE_NAME: mysql
         volumes:
             - ./etc/mysql/my.cnf:/etc/mysql/my.cnf
+            - dbdata:/var/lib/mysql
