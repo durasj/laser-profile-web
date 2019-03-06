@@ -10,7 +10,7 @@ environments:
         host: localhost
         name: DB_NAME
         user: DB_USER
-        pass: DB_PASS
+        pass: DB_PASSWORD
         port: 3306
         charset: utf8
 
