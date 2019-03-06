@@ -35,8 +35,6 @@ services:
         ports:
             - "80:80"
             - "443:443"
-        networks:
-            - app-network
         volumes:
             - ./:/var/www
             - ./etc/nginx/conf.d/:/etc/nginx/conf.d/
