@@ -54,8 +54,8 @@ services:
         environment:
             MYSQL_DATABASE: laser_profile
             MYSQL_ROOT_PASSWORD: DB_PASSWORD
-        SERVICE_TAGS: dev
-        SERVICE_NAME: mysql
+            SERVICE_TAGS: dev
+            SERVICE_NAME: mysql
         networks:
             - app-network
         volumes:
