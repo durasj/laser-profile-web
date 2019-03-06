@@ -4,10 +4,6 @@ volumes:
     logs:
         driver: local
 
-networks:
-  app-network:
-    driver: bridge
-
 services:
     #PHP Service
     php:
@@ -21,8 +17,8 @@ services:
         tty: true
         environment:
             docker: "true"
-        networks:
-            - app-network
+        ports:
+            - "9000:9000"
         volumes:
             - .:/var/www
             - logs:/var/www/logs
@@ -37,6 +33,7 @@ services:
         ports:
             - "80:80"
             - "443:443"
+            - "9000:9000"
         networks:
             - app-network
         volumes:
@@ -56,7 +53,5 @@ services:
             MYSQL_ROOT_PASSWORD: DB_PASSWORD
             SERVICE_TAGS: dev
             SERVICE_NAME: mysql
-        networks:
-            - app-network
         volumes:
             - ./etc/mysql/my.cnf:/etc/mysql/my.cnf
