@@ -33,7 +33,7 @@ services:
         restart: unless-stopped
         tty: true
         ports:
-            - "80:80"
+            - "8080:8080"
         volumes:
             - ./:/var/www
             - ./etc/nginx/conf.d/:/etc/nginx/conf.d/
