@@ -53,4 +53,4 @@ services:
             SERVICE_NAME: mysql
         volumes:
             - ./etc/mysql/my.cnf:/etc/mysql/my.cnf
-            - dbdata:/var/lib/mysql
+            - dbdata:/var/lib/mysql-files
