@@ -3,7 +3,8 @@ namespace Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Game extends Model {
+class Game extends Model
+{
     /**
      * The players that belong to the game
      */

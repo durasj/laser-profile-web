@@ -1,14 +1,14 @@
 <?php
 
-use Slim\Http\Request;
-use Slim\Http\Response;
+use \Controllers\IndexController;
+use \Controllers\LoginController;
+use \Controllers\GamesController;
 
-// Routes
+// GUI Routes
+$app->get('/', IndexController::class);
+$app->get('/login', LoginController::class);
+$app->get('/games', GamesController::class);
 
-$app->get('/[{name}]', function (Request $request, Response $response, array $args) {
-    // Sample log message
-    $this->logger->info("Slim-Skeleton '/' route");
+// Backend API routes
 
-    // Render index view
-    return $this->renderer->render($response, 'index.phtml', $args);
-});
+// REST API routes

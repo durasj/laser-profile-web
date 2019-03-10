@@ -3,7 +3,7 @@
 
 use Phinx\Seed\AbstractSeed;
 
-class Init extends AbstractSeed
+class Operators extends AbstractSeed
 {
     public function run()
     {

@@ -3,3 +3,7 @@
 !/logs/README.md
 /src/settings.php
 phinx.yml
+
+node_modules/
+.cache/
+public/assets/

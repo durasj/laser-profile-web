@@ -15,6 +15,6 @@ class Teams extends AbstractSeed
             ];
         }
 
-        $this->table('users')->insert($data)->save();
+        $this->table('teams')->insert($data)->save();
     }
 }

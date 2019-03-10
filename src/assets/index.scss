@@ -1,0 +1,22 @@
+@import "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons";
+
+@import "../../node_modules/material-kit/assets/scss/material-kit.scss";
+
+.form-check .form-check-label span {
+    left: 0px;
+    top: -5px;
+}
+
+.form-check .form-check-sign:before {
+    top: -5px;
+}
+
+.navbar .navbar-brand {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+.card-login .form {
+    min-height: auto;
+}
