@@ -37,4 +37,60 @@ return [
             'default' => 'en_US',
         ],
     ],
+    'acl' => [
+        'admin' => [
+            'games:create',
+            'games:read',
+            'games:edit',
+            'games:delete',
+            // Items of others
+            'games:others',
+
+            'teams:create',
+            'teams:read',
+            'teams:edit',
+            'teams:delete',
+            // Items of others
+            'teams:others',
+
+            'users:create',
+            'users:read',
+            'users:edit',
+            'users:delete',
+            // Items of others
+            'users:others',
+        ],
+
+        'operator' => [
+            'games:create',
+            'games:read',
+            'games:edit',
+            'games:delete',
+            // Items of others
+            'games:others',
+
+            'teams:create',
+            'teams:read',
+            'teams:edit',
+            'teams:delete',
+            // Items of others
+            'teams:others',
+
+            'users:create',
+            'users:read',
+            'users:edit',
+            'users:delete',
+            // Items of others
+            'users:others',
+        ],
+
+        'player' => [
+            'games:read',
+
+            'teams:read',
+
+            'users:read',
+            'users:edit',
+        ],
+    ],
 ];

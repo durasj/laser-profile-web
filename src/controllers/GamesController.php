@@ -2,18 +2,9 @@
 
 namespace Controllers;
 
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Models\Game;
 
-class GamesController
+class GamesController extends CRUDController
 {
-    public function __construct($container)
-    {
-        $this->renderer = $container->get('renderer');
-    }
-
-    public function __invoke(Request $request, Response $response, array $args)
-    {
-        return $this->renderer->render($response, 'games.phtml', $args);
-    }
+    protected $modelClass = Game::class;
 }

@@ -9,12 +9,10 @@ class IndexController
 {
     public function __invoke(Request $request, Response $response, array $args)
     {
-        // TODO: Add actual logic
+        // Web server should automatically handle routes that dont start with /api as files
+        // with fallback to index.html as backend UI is SPA
+        // Still, for built-in PHP server, we'll serve the index.html
 
-        // Redirect to login if not authenticated
-        return $response->withRedirect('/login');
-
-        // ... otherwise to games
-        return $response->withRedirect('/games');
+        return $response->write(file_get_contents(__DIR__ . '/../assets/index.html'));
     }
 }

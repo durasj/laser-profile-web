@@ -8,8 +8,8 @@
     "test": "tests"
   },
   "scripts": {
-    "start": "parcel watch src/assets/index.js src/assets/index.scss -d public/assets",
-    "build": "parcel build src/assets/index.js src/assets/index.scss -d public/assets",
+    "start": "parcel src/assets/index.html -d public/assets",
+    "build": "parcel build src/assets/index.html -d public/assets",
     "php": "php -S localhost:8080 -t public",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -24,15 +24,26 @@
   },
   "homepage": "https://github.com/durasj/laser-profile-web#readme",
   "dependencies": {
-    "bootstrap-datetimepicker": "0.0.7",
-    "bootstrap-material-design": "^4.1.1",
-    "jquery": "^3.3.1",
-    "material-kit": "durasj/material-kit",
-    "moment": "^2.24.0",
-    "popper.js": "^1.14.7"
+    "@material-ui/core": "^4.0.1",
+    "formik": "^1.5.7",
+    "formik-material-ui": "0.0.18",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "rxjs": "^6.5.2",
+    "styled-components": "^4.2.1",
+    "yup": "^0.27.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
+    "@babel/preset-react": "^7.0.0",
+    "core-js": "^2.6.9",
     "parcel-bundler": "^1.12.0",
+    "prettier": "^1.17.1",
     "sass": "^1.17.2"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "all"
   }
 }

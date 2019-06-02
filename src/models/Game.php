@@ -5,6 +5,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Game extends Model
 {
+    protected $fillable = ['played', 'mode', 'players', 'teams', 'settings', 'attachment'];
+    protected $dates = ['played'];
+
     /**
      * The players that belong to the game
      */
