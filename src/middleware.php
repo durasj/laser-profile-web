@@ -3,11 +3,6 @@
 
 $container = $app->getContainer();
 
-$app->add(new \Boronczyk\LocalizationMiddleware(
-    $container->settings['locale']['available'],
-    $container->settings['locale']['default'],
-));
-
 $app->add(new \Tuupola\Middleware\JwtAuthentication([
     'path' => ['/api'],
     'ignore' => ['/api/auth'],
