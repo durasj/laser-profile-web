@@ -23,7 +23,7 @@ return [
 
         'db' => [
             'driver' => 'mysql',
-            'host' => 'localhost',
+            'host' => 'DB_SERVER',
             'database' => 'DB_NAME',
             'username' => 'DB_USER',
             'password' => 'DB_PASSWORD',

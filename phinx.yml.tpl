@@ -7,7 +7,7 @@ environments:
     default_database: development
     production:
         adapter: mysql
-        host: localhost
+        host: DB_SERVER
         name: DB_NAME
         user: DB_USER
         pass: DB_PASSWORD
