@@ -13,17 +13,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 
-function MadeWithLove() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Built by '}
-      <Link color="inherit" href="https://duras.me/">
-        Jakub Ďuraš
-      </Link>
-    </Typography>
-  );
-}
-
 const Dash = () => {
   return (
     <React.Fragment>
@@ -94,7 +83,12 @@ const Dash = () => {
         >
           Something here to give the footer a purpose!
         </Typography>
-        <MadeWithLove />
+        <Typography variant="body2" color="textSecondary" align="center">
+          {'Built by '}
+          <Link color="inherit" href="https://duras.me/">
+            Jakub Ďuraš
+          </Link>
+        </Typography>
       </footer>
       {/* End footer */}
     </React.Fragment>
