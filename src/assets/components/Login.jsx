@@ -57,7 +57,7 @@ const Login = ({ onSubmit }) => {
           await onSubmit(values);
           setSubmitting(false);
         }}
-        render={({ submitForm, isSubmitting }) => (
+        render={({ isSubmitting }) => (
           <Form>
             <Logo>
               <img src={logo} alt="Logo LaserProfile" />
