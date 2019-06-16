@@ -4,6 +4,7 @@ import { formatRelative, parse } from 'date-fns';
 import DataTable from './DataTable';
 import { list, bulkDelete } from '../effects/index';
 import ConfirmationDialog from './ConfirmationDialog';
+import GamesDetailDialog from './GamesDetailDialog';
 
 const headRows = [
   {
@@ -31,6 +32,9 @@ const headRows = [
 const Games = ({ onError }) => {
   const [rows, setRows] = useState([]);
   const [deleting, setDeleting] = useState();
+  const [detailOpened, setDetailOpened] = useState(false);
+  const [detailData, setDetailData] = useState();
+
   const loadGames = async () => {
     try {
       const data = await list('games');
@@ -44,8 +48,14 @@ const Games = ({ onError }) => {
     loadGames();
   }, []);
 
-  const onCreate = () => console.log('Create');
-  const onEdit = (row) => console.log('Edit', row);
+  const onCreate = () => {
+    setDetailData(undefined);
+    setDetailOpened(true);
+  };
+  const onEdit = row => {
+    setDetailData(row);
+    setDetailOpened(true);
+  };
   const confirmDelete = async () => {
     await bulkDelete('games', deleting);
     loadGames();
@@ -54,11 +64,20 @@ const Games = ({ onError }) => {
 
   return (
     <>
-      {deleting && <ConfirmationDialog
-        description={`Are you sure you want to delete these ${deleting.length} games?`}
-        onCancel={() => setDeleting(undefined)}
-        onConfirm={confirmDelete}
-      />}
+      {deleting && (
+        <ConfirmationDialog
+          description={`Are you sure you want to delete these ${deleting.length} games?`}
+          onCancel={() => setDeleting(undefined)}
+          onConfirm={confirmDelete}
+        />
+      )}
+
+      <GamesDetailDialog
+        data={detailData}
+        opened={detailOpened}
+        onCancel={() => setDetailOpened(false)}
+      />
+
       <DataTable
         title="Games"
         headRows={headRows}

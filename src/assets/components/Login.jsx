@@ -47,48 +47,46 @@ const schema = object().shape({
   password: string().required(),
 });
 
-const Login = ({ onSubmit }) => {
-  return (
-    <LoginWrapper>
-      <Formik
-        initialValues={{ email: '', password: '' }}
-        validationSchema={schema}
-        onSubmit={async (values, { setSubmitting }) => {
-          await onSubmit(values);
-          setSubmitting(false);
-        }}
-        render={({ isSubmitting }) => (
-          <Form>
-            <Logo>
-              <img src={logo} alt="Logo LaserProfile" />
-            </Logo>
-            <FieldsWrapper>
-              <Field
-                name="email"
-                type="email"
-                label="Email"
-                component={TextField}
-              />
-              <Field
-                type="password"
-                label="Password"
-                name="password"
-                component={TextField}
-              />
-              <Button
-                type="submit"
-                variant="contained"
-                color="secondary"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? 'Logging in...' : 'Log in'}
-              </Button>
-            </FieldsWrapper>
-          </Form>
-        )}
-      />
-    </LoginWrapper>
-  );
-};
+const Login = ({ onSubmit }) => (
+  <LoginWrapper>
+    <Formik
+      initialValues={{ email: '', password: '' }}
+      validationSchema={schema}
+      onSubmit={async (values, { setSubmitting }) => {
+        await onSubmit(values);
+        setSubmitting(false);
+      }}
+      render={({ isSubmitting }) => (
+        <Form>
+          <Logo>
+            <img src={logo} alt="Logo LaserProfile" />
+          </Logo>
+          <FieldsWrapper>
+            <Field
+              name="email"
+              type="email"
+              label="Email"
+              component={TextField}
+            />
+            <Field
+              type="password"
+              label="Password"
+              name="password"
+              component={TextField}
+            />
+            <Button
+              type="submit"
+              variant="contained"
+              color="secondary"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Logging in...' : 'Log in'}
+            </Button>
+          </FieldsWrapper>
+        </Form>
+      )}
+    />
+  </LoginWrapper>
+);
 
 export default Login;

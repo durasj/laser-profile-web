@@ -2,6 +2,8 @@ import React, { useState, useLayoutEffect } from 'react';
 import { MuiThemeProvider } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Snackbar from '@material-ui/core/Snackbar';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 
 import theme from '../theme';
 import Login from './Login';
@@ -58,20 +60,24 @@ const App = () => {
   return (
     <React.Fragment>
       <MuiThemeProvider theme={theme}>
-        <CssBaseline />
-        {!user && <Login onSubmit={onLogin} />}
-        {user && <Dash user={user} onLogout={onLogout} onError={onError} />}
-        {snackbars.map(snackbar => (
-          <Snackbar
-            key={snackbar.id}
-            open={true}
-            autoHideDuration={6000}
-            onClose={(e, reason) =>
-              reason === 'timeout' && onSnackClose(snackbar.id)
-            }
-            message={snackbar.message}
-          />
-        ))}
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <>
+            <CssBaseline />
+            {!user && <Login onSubmit={onLogin} />}
+            {user && <Dash user={user} onLogout={onLogout} onError={onError} />}
+            {snackbars.map(snackbar => (
+              <Snackbar
+                key={snackbar.id}
+                open={true}
+                autoHideDuration={6000}
+                onClose={(e, reason) =>
+                  reason === 'timeout' && onSnackClose(snackbar.id)
+                }
+                message={snackbar.message}
+              />
+            ))}
+          </>
+        </MuiPickersUtilsProvider>
       </MuiThemeProvider>
     </React.Fragment>
   );
