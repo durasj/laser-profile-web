@@ -14,7 +14,7 @@ const headRows = [
     label: 'Mode',
   },
   { id: 'players', numeric: true, disablePadding: false, label: 'Players' },
-  { id: 'teams', numeric: true, disablePadding: false, label: 'Teams' },
+  { id: 'teams', numeric: false, disablePadding: false, label: 'Teams' },
   {
     id: 'played',
     numeric: false,

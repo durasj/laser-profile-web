@@ -1,42 +1,92 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import DataTable from './DataTable';
+import { list, bulkDelete } from '../effects/index';
+import ConfirmationDialog from './ConfirmationDialog';
+import UsersDetailDialog from './UsersDetailDialog';
 
 const headRows = [
   {
-    id: 'name',
+    id: 'nick',
     numeric: false,
     disablePadding: true,
-    label: 'Dessert (100g serving)',
+    label: 'Nick',
   },
-  { id: 'calories', numeric: true, disablePadding: false, label: 'Calories' },
-  { id: 'fat', numeric: true, disablePadding: false, label: 'Fat (g)' },
-  { id: 'carbs', numeric: true, disablePadding: false, label: 'Carbs (g)' },
-  { id: 'protein', numeric: true, disablePadding: false, label: 'Protein (g)' },
+  {
+    id: 'email',
+    numeric: false,
+    disablePadding: false,
+    label: 'Email',
+    align: 'left',
+  },
+  {
+    id: 'role',
+    numeric: false,
+    disablePadding: false,
+    label: 'Role',
+    align: 'left',
+  },
 ];
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
+const Users = ({ onError }) => {
+  const [rows, setRows] = useState([]);
+  const [deleting, setDeleting] = useState();
+  const [detailOpened, setDetailOpened] = useState(false);
+  const [detailData, setDetailData] = useState();
 
-const rows = [
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Donut', 452, 25.0, 51, 4.9),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-  createData('Honeycomb', 408, 3.2, 87, 6.5),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Jelly Bean', 375, 0.0, 94, 0.0),
-  createData('KitKat', 518, 26.0, 65, 7.0),
-  createData('Lollipop', 392, 0.2, 98, 0.0),
-  createData('Marshmallow', 318, 0, 81, 2.0),
-  createData('Nougat', 360, 19.0, 9, 37.0),
-  createData('Oreo', 437, 18.0, 63, 4.0),
-];
+  const loadUsers = async () => {
+    try {
+      const data = await list('users');
 
-const Users = () => {
-  return <DataTable title="Users" headRows={headRows} rows={rows} />;
+      setRows(data);
+    } catch (e) {
+      onError(e.message);
+    }
+  };
+  useEffect(() => {
+    loadUsers();
+  }, []);
+
+  const onCreate = () => {
+    setDetailData(undefined);
+    setDetailOpened(true);
+  };
+  const onEdit = row => {
+    setDetailData(row);
+    setDetailOpened(true);
+  };
+  const confirmDelete = async () => {
+    await bulkDelete('users', deleting);
+    loadUsers();
+    setDeleting(undefined);
+  };
+
+  return (
+    <>
+      {deleting && (
+        <ConfirmationDialog
+          description={`Are you sure you want to delete these ${deleting.length} games?`}
+          onCancel={() => setDeleting(undefined)}
+          onConfirm={confirmDelete}
+        />
+      )}
+
+      <UsersDetailDialog
+        data={detailData}
+        opened={detailOpened}
+        onCancel={() => setDetailOpened(false)}
+      />
+
+      <DataTable
+        title="Users"
+        headRows={headRows}
+        rows={rows}
+        onCreate={onCreate}
+        onEdit={onEdit}
+        onDelete={setDeleting}
+      />
+    </>
+  );
 };
 
 export default Users;
