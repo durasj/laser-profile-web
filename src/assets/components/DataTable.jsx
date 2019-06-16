@@ -99,13 +99,15 @@ const DataTable = ({ title, headRows, rows, onCreate, onEdit, onDelete }) => {
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
+  const handleDelete = () => onDelete(selected) && setSelected([]);
+
   return (
     <StyledPaper>
       <DataTableToolbar
         title={title}
         numSelected={selected.length}
         onCreate={onCreate}
-        onDelete={() => onDelete(selected)}
+        onDelete={handleDelete}
       />
       <TableWrapper>
         <StyledTable aria-labelledby="tableTitle">

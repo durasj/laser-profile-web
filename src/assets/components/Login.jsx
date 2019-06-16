@@ -78,7 +78,7 @@ const Login = ({ onSubmit }) => {
               <Button
                 type="submit"
                 variant="contained"
-                color="primary"
+                color="secondary"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? 'Logging in...' : 'Log in'}

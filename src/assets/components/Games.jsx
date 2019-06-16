@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { formatRelative, parse } from 'date-fns';
 
 import DataTable from './DataTable';
-import { list } from '../effects/index';
+import { list, bulkDelete } from '../effects/index';
+import ConfirmationDialog from './ConfirmationDialog';
 
 const headRows = [
   {
@@ -29,31 +30,44 @@ const headRows = [
 
 const Games = ({ onError }) => {
   const [rows, setRows] = useState([]);
-  useEffect(() => {
-    (async () => {
-      try {
-        const data = await list('games');
+  const [deleting, setDeleting] = useState();
+  const loadGames = async () => {
+    try {
+      const data = await list('games');
 
-        setRows(data);
-      } catch (e) {
-        onError(e.message);
-      }
-    })();
+      setRows(data);
+    } catch (e) {
+      onError(e.message);
+    }
+  };
+  useEffect(() => {
+    loadGames();
   }, []);
 
   const onCreate = () => console.log('Create');
   const onEdit = (row) => console.log('Edit', row);
-  const onDelete = (selected) => console.log('Delete', selected);
+  const confirmDelete = async () => {
+    await bulkDelete('games', deleting);
+    loadGames();
+    setDeleting(undefined);
+  };
 
   return (
-    <DataTable
-      title="Games"
-      headRows={headRows}
-      rows={rows}
-      onCreate={onCreate}
-      onEdit={onEdit}
-      onDelete={onDelete}
-    />
+    <>
+      {deleting && <ConfirmationDialog
+        description={`Are you sure you want to delete these ${deleting.length} games?`}
+        onCancel={() => setDeleting(undefined)}
+        onConfirm={confirmDelete}
+      />}
+      <DataTable
+        title="Games"
+        headRows={headRows}
+        rows={rows}
+        onCreate={onCreate}
+        onEdit={onEdit}
+        onDelete={setDeleting}
+      />
+    </>
   );
 };
 
