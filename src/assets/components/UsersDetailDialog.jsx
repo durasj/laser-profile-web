@@ -5,6 +5,10 @@ import { string, object } from 'yup';
 import styled from 'styled-components';
 import generator from 'generate-password-browser';
 import MenuItem from '@material-ui/core/MenuItem';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import IconButton from '@material-ui/core/IconButton';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 
 import DetailDialog from './DetailDialog';
 import theme from '../theme';
@@ -20,13 +24,16 @@ const FieldsContainer = styled.div`
 
 const schema = object().shape({
   nick: string().required(),
-  email: string().email().required(),
+  email: string()
+    .email()
+    .required(),
   password: string().min(8),
   role: string().required(),
 });
 
 const GamesDetailDialog = ({ data, opened, onCancel }) => {
   const [saving, setSaving] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <DetailDialog
@@ -49,9 +56,9 @@ const GamesDetailDialog = ({ data, opened, onCancel }) => {
                 nick: '',
                 email: '',
                 password: generator.generate({
-                    length: 8,
-                    numbers: true,
-                    excludeSimilarCharacters: true,
+                  length: 8,
+                  numbers: true,
+                  excludeSimilarCharacters: true,
                 }),
                 role: '',
               }
@@ -79,10 +86,22 @@ const GamesDetailDialog = ({ data, opened, onCancel }) => {
                 component={TextField}
               />
               <Field
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 label="Password"
                 name="password"
                 placeholder="Not changed if empty"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="Toggle password visibility"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
                 component={TextField}
               />
               <Field

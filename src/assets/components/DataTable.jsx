@@ -100,6 +100,10 @@ const DataTable = ({ title, headRows, rows, onCreate, onEdit, onDelete }) => {
     rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
   const handleDelete = () => onDelete(selected) && setSelected([]);
+  const handleEdit = (e, row) => {
+    e.stopPropagation();
+    onEdit(row);
+  }
 
   return (
     <StyledPaper>
@@ -171,7 +175,7 @@ const DataTable = ({ title, headRows, rows, onCreate, onEdit, onDelete }) => {
 
                     <TableCell padding="checkbox">
                       <Tooltip title="Edit">
-                        <IconButton onClick={() => onEdit(row)} aria-label="Edit">
+                        <IconButton onClick={(e) => handleEdit(e, row)} aria-label="Edit">
                           <EditIcon />
                         </IconButton>
                       </Tooltip>
