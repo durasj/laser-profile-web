@@ -9,3 +9,9 @@ To compile the frontend assets, you need the [node.js with npm](https://nodejs.o
 You can run the backend by running `php -S localhost:8080 -t public` - also available as `npm run php`. Please make sure you have MySQL (or compatible alternative) running and `src/settings.php` configured. If you want to run db migrations/seeders, you also need to configure the `phinx.yml`.
 
 Alternatively, you can also use the bundled `docker-compose.yml` which can create and start PHP, MySQL and nginx proxy for you. Tested only on the Linux.
+
+## Screenshots
+
+![login screen](./screenshots/login.jpg "Login")
+
+![dash screen](./screenshots/dash.jpg "Dash")
