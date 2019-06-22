@@ -3,7 +3,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -42,6 +42,10 @@ const StyledFooter = styled.footer`
   padding: ${theme.spacing(4)}px;
 `;
 
+const StyledLogoutIcon = styled(ExitToApp)`
+  margin-left: ${theme.spacing(1)}px;
+`;
+
 const Dash = ({ user, onLogout, onError }) => {
   const [page, setPage] = useState('games');
 
@@ -57,15 +61,15 @@ const Dash = ({ user, onLogout, onError }) => {
               <Tab value="users" label="Users" />
             </Tabs>
 
-            <IconButton
+            <Button
               aria-label="Logout"
               aria-controls="menu-appbar"
-              aria-haspopup="true"
               onClick={onLogout}
               color="inherit"
             >
-              <ExitToApp />
-            </IconButton>
+              {user.nick}
+              <StyledLogoutIcon />
+            </Button>
           </StyledToolbar>
         </AppBar>
       </ElevationScroll>
@@ -73,7 +77,7 @@ const Dash = ({ user, onLogout, onError }) => {
       <StyledMain>
         <Container maxWidth="md">
           {page === 'games' && <Games onError={onError} />}
-          {page === 'users' && <Users onError={onError} />}
+          {page === 'users' && <Users onError={onError} user={user} />}
         </Container>
       </StyledMain>
 

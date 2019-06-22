@@ -14,7 +14,13 @@ const headRows = [
     label: 'Mode',
   },
   { id: 'players', numeric: true, disablePadding: false, label: 'Players' },
-  { id: 'teams', numeric: false, disablePadding: false, label: 'Teams' },
+  {
+    id: 'teams',
+    numeric: false,
+    disablePadding: false,
+    label: 'Teams',
+    align: 'left',
+  },
   {
     id: 'played',
     numeric: false,
@@ -61,12 +67,19 @@ const Games = ({ onError }) => {
     loadGames();
     setDeleting(undefined);
   };
+  const afterCreate = () => {
+    loadGames();
+    setDetailOpened(false);
+  }
+  const afterUpdate = () =>  loadGames();
 
   return (
     <>
       {deleting && (
         <ConfirmationDialog
-          description={`Are you sure you want to delete these ${deleting.length} games?`}
+          description={`Are you sure you want to delete these ${
+            deleting.length
+          } games?`}
           onCancel={() => setDeleting(undefined)}
           onConfirm={confirmDelete}
         />
@@ -76,6 +89,9 @@ const Games = ({ onError }) => {
         data={detailData}
         opened={detailOpened}
         onCancel={() => setDetailOpened(false)}
+        onError={onError}
+        onCreate={afterCreate}
+        onUpdate={afterUpdate}
       />
 
       <DataTable

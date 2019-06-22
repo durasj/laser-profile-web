@@ -3,11 +3,12 @@ import { TextField } from 'formik-material-ui';
 import { Formik, Form, Field } from 'formik';
 import { string, object, date, number } from 'yup';
 import styled from 'styled-components';
-import { parse } from 'date-fns';
+import { parse, format } from 'date-fns';
 import { DateTimePicker } from '@material-ui/pickers';
 
 import DetailDialog from './DetailDialog';
 import theme from '../theme';
+import { create, update } from '../effects/index';
 
 const FieldsContainer = styled.div`
   display: flex;
@@ -28,15 +29,40 @@ const schema = object().shape({
   settings: string(),
 });
 
-const GamesDetailDialog = ({ data, opened, onCancel }) => {
+const GamesDetailDialog = ({
+  data,
+  opened,
+  onCancel,
+  onError,
+  onCreate,
+  onUpdate,
+}) => {
   const [saving, setSaving] = useState(false);
+
+  const onSubmit = async values => {
+    try {
+      if (values.played) {
+        values.played = format(values.played, 'yyyy-MM-dd HH:mm:ss');
+      }
+
+      if (data) {
+        await update('games', data.id, values);
+        onUpdate();
+      } else {
+        await create('games', values);
+        onCreate();
+      }
+    } catch (e) {
+      onError(e.message);
+    }
+  };
 
   return (
     <DetailDialog
       title={data ? `Edit game ID ${data.id}` : 'Create game'}
       open={opened}
       onCancel={onCancel}
-      formName="games"
+      formName="games-form"
       submitting={saving}
     >
       <Formik
@@ -60,12 +86,12 @@ const GamesDetailDialog = ({ data, opened, onCancel }) => {
         validationSchema={schema}
         onSubmit={async (values, { setSubmitting }) => {
           setSaving(true);
-          // await onSubmit(values);
+          await onSubmit(values);
           setSubmitting(false);
           setSaving(false);
         }}
         render={() => (
-          <Form name="games">
+          <Form id="games-form">
             <FieldsContainer>
               <Field
                 name="played"

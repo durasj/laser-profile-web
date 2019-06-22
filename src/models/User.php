@@ -8,7 +8,7 @@ class User extends Model
     protected $fillable = ['nick', 'email'];
     protected $hidden = ['password'];
 
-    protected $roles = ['admin'];
+    protected $roles = ['admin', 'operator', 'player'];
 
     /**
      * The games that belong to the user (if he has role player)
@@ -44,6 +44,10 @@ class User extends Model
      */
     public function setPasswordAttribute($value)
     {
+        if (empty($value)) {
+            throw new \Exception('Password can not be empty.');
+        }
+
         $this->attributes['password'] = password_hash($value, PASSWORD_ARGON2ID);
     }
 

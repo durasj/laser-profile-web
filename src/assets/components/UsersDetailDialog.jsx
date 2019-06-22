@@ -12,6 +12,7 @@ import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 
 import DetailDialog from './DetailDialog';
 import theme from '../theme';
+import { create, update } from '../effects/index';
 
 const FieldsContainer = styled.div`
   display: flex;
@@ -31,16 +32,42 @@ const schema = object().shape({
   role: string().required(),
 });
 
-const GamesDetailDialog = ({ data, opened, onCancel }) => {
+const UsersDetailDialog = ({
+  data,
+  opened,
+  user,
+  onCancel,
+  onError,
+  onCreate,
+  onUpdate,
+}) => {
   const [saving, setSaving] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
+  const onSubmit = async values => {
+    try {
+      if (values.password === '') {
+        values.password = undefined;
+      }
+
+      if (data) {
+        await update('users', data.id, values);
+        onUpdate();
+      } else {
+        await create('users', values);
+        onCreate();
+      }
+    } catch (e) {
+      onError(e.message);
+    }
+  };
+
   return (
     <DetailDialog
-      title={data ? `Edit game ID ${data.id}` : 'Create game'}
+      title={data ? `Edit user ID ${data.id}` : 'Create user'}
       open={opened}
       onCancel={onCancel}
-      formName="games"
+      formName="users-form"
       submitting={saving}
     >
       <Formik
@@ -66,12 +93,12 @@ const GamesDetailDialog = ({ data, opened, onCancel }) => {
         validationSchema={schema}
         onSubmit={async (values, { setSubmitting }) => {
           setSaving(true);
-          // await onSubmit(values);
+          await onSubmit(values);
           setSubmitting(false);
           setSaving(false);
         }}
         render={() => (
-          <Form name="games">
+          <Form id="users-form">
             <FieldsContainer>
               <Field
                 type="text"
@@ -97,7 +124,11 @@ const GamesDetailDialog = ({ data, opened, onCancel }) => {
                         aria-label="Toggle password visibility"
                         onClick={() => setShowPassword(!showPassword)}
                       >
-                        {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                        {showPassword ? (
+                          <VisibilityIcon />
+                        ) : (
+                          <VisibilityOffIcon />
+                        )}
                       </IconButton>
                     </InputAdornment>
                   ),
@@ -111,8 +142,12 @@ const GamesDetailDialog = ({ data, opened, onCancel }) => {
                 select
                 component={TextField}
               >
-                <MenuItem value="admin">Administrator</MenuItem>
-                <MenuItem value="operator">Operator</MenuItem>
+                {user.role === 'admin' && (
+                  <MenuItem value="admin">Administrator</MenuItem>
+                )}
+                {user.role === 'admin' && (
+                  <MenuItem value="operator">Operator</MenuItem>
+                )}
                 <MenuItem value="player">Player</MenuItem>
               </Field>
             </FieldsContainer>
@@ -123,4 +158,4 @@ const GamesDetailDialog = ({ data, opened, onCancel }) => {
   );
 };
 
-export default React.memo(GamesDetailDialog);
+export default React.memo(UsersDetailDialog);

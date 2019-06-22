@@ -5,6 +5,12 @@ import { list, bulkDelete } from '../effects/index';
 import ConfirmationDialog from './ConfirmationDialog';
 import UsersDetailDialog from './UsersDetailDialog';
 
+const roleHr = {
+  admin: 'Administrator',
+  operator: 'Operator',
+  player: 'Player',
+};
+
 const headRows = [
   {
     id: 'nick',
@@ -25,10 +31,11 @@ const headRows = [
     disablePadding: false,
     label: 'Role',
     align: 'left',
+    renderer: (value) => roleHr[value],
   },
 ];
 
-const Users = ({ onError }) => {
+const Users = ({ onError, user }) => {
   const [rows, setRows] = useState([]);
   const [deleting, setDeleting] = useState();
   const [detailOpened, setDetailOpened] = useState(false);
@@ -60,12 +67,19 @@ const Users = ({ onError }) => {
     loadUsers();
     setDeleting(undefined);
   };
+  const afterCreate = () => {
+    loadUsers();
+    setDetailOpened(false);
+  }
+  const afterUpdate = () =>  loadGames();
 
   return (
     <>
       {deleting && (
         <ConfirmationDialog
-          description={`Are you sure you want to delete these ${deleting.length} games?`}
+          description={`Are you sure you want to delete these ${
+            deleting.length
+          } games?`}
           onCancel={() => setDeleting(undefined)}
           onConfirm={confirmDelete}
         />
@@ -74,7 +88,11 @@ const Users = ({ onError }) => {
       <UsersDetailDialog
         data={detailData}
         opened={detailOpened}
+        user={user}
         onCancel={() => setDetailOpened(false)}
+        onError={onError}
+        onCreate={afterCreate}
+        onUpdate={afterUpdate}
       />
 
       <DataTable
